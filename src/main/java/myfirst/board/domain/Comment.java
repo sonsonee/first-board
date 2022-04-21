@@ -9,16 +9,14 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class Post {
+public class Comment {
 
     @Id @GeneratedValue
-    @Column(name = "post_id")
+    @Column(name = "comment_id")
     private Long id;
 
-    private String title;
     private String content;
-    private Long views;
-    private LocalDateTime postedDate;
+    private LocalDateTime commentedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
