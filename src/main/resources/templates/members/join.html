@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<meta charset="UTF-8"/>
+<title>회원가입 페이지</title>
+</head>
+<link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous"
+/>
+<link rel="stylesheet" href="./join.css"/>
+<body>
+<ul class="nav justify-content-end">
+    <li class="nav-item">
+        <a class="nav-link" href="./login.html">로그인</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="./join.html">회원가입</a>
+    </li>
+</ul>
+
+<div class="container">
+<!--    <div th:replace="fragments/bodyHeader :: bodyHeader"/>-->
+    <form action="/join.do" method="post">
+        <div>
+            <label for="loginId">아이디: </label>
+            <input id="loginId" name="loginId" type="text">
+        </div>
+        <div>
+            <label for="password">패스워드: </label>
+            <input id="password" name="password" type="password">
+        </div>
+        <div>
+            <label for="nickname">닉네임: </label>
+            <input id="nickname" name="nickname" type="text">
+        </div>
+        <div>
+            <label for="email">이메일: </label>
+            <input id="email" name="email" type="text">
+        </div>
+        <input type="submit" value="가입하기">
+    </form>
+    <br/>
+<!--    <div th:replace="fragments/footer :: footer"/>-->
+</div> <!-- /container -->
+
+</body>
+</html>

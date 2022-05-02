@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;    //  Primary Key
 
@@ -28,4 +28,5 @@ public class Member {
         this.email = email;
         this.joinDate = joinDate;
     }
+
 }
