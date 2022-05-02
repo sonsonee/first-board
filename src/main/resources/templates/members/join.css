@@ -1,0 +1,18 @@
+.container {
+  text-align: center;
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 8%;
+}
+
+.nav {
+  background-color: navy;
+}
+
+.nav-link {
+  color: white;
+}
+
+.btn {
+  margin: 5%;
+}

@@ -1,0 +1,23 @@
+.body {
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.mb-3 {
+  width: 45%;
+  margin: 2% auto;
+}
+
+.btn {
+  margin: 2%;
+}
+
+.nav {
+  background-color: navy;
+}
+
+.nav-link {
+  color: white;
+}

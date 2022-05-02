@@ -1,0 +1,14 @@
+.body {
+  text-align: center;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 5%;
+}
+
+.home {
+  float: left;
+}
+
+.title {
+  text-align: left;
+}
