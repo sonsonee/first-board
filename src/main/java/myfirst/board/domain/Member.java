@@ -21,12 +21,11 @@ public class Member {
     private String email;
     private LocalDateTime joinDate;
 
-    public void initMemberInfo(String loginId, String password, String nickname, String email, LocalDateTime joinDate) {
+    public Member(String loginId, String password, String nickname, String email) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
-        this.joinDate = joinDate;
+        this.joinDate = LocalDateTime.now();
     }
-
 }

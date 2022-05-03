@@ -1,15 +1,13 @@
 package myfirst.board.controller;
 
 import myfirst.board.domain.Member;
-import myfirst.board.dto.MemberDto;
+import myfirst.board.dto.CreateMemberDto;
 import myfirst.board.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -19,15 +17,22 @@ public class JoinController {
     @Autowired
     MemberService memberService;
 
-    @GetMapping("/members")
+    @GetMapping("/join")
     public String createForm() {
         return "members/join";
     }
 
-    @PostMapping("/members/join")
-    public String createMember(Member member) {
+    @PostMapping("/join/new")
+    public String createMember(@Valid CreateMemberDto dto, BindingResult result) {
+
+        if(result.hasErrors()){
+            return"/join";
+        }
+
+        Member member = new Member(dto.getLoginId(), dto.getPassword(), dto.getNickname(), dto.getEmail());
+
         memberService.join(member);
-        return "home";
+        return "redirect:/";
     }
 
 }

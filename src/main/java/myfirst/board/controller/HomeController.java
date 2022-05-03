@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("data", "어서오세요!");
+    public String mainPage() {
         return "home"; // 렌더링할 html파일 경로
     }
 

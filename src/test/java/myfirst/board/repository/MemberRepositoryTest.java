@@ -23,8 +23,7 @@ class MemberRepositoryTest {
     @Test
     public void save() {
         //given
-        Member member = new Member();
-        member.initMemberInfo("test1", "pw12345", "member1", "test2343@naver.com", LocalDateTime.now());
+        Member member = new Member("test1", "pw12345", "member1", "test2343@naver.com");
 
         //when
         memberRepository.save(member);

@@ -25,8 +25,7 @@ class MemberServiceTest {
     @Test
     void join() {
         //given
-        Member member = new Member();
-        member.initMemberInfo("test1", "pw12345", "member1", "test2343@naver.com", LocalDateTime.now());
+        Member member = new Member("test1", "pw12345", "testnick", "test@naver.com");
 
         //when
         Long savedId = memberService.join(member);
