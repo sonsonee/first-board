@@ -1,38 +1,35 @@
-package myfirst.board.repository;
+package myfirst.board.domain.repository;
 
 import myfirst.board.domain.Member;
+import myfirst.board.domain.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import javax.persistence.EntityManager;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
 class MemberRepositoryTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    @Autowired MemberRepository memberRepository;
 
     @Test
     public void save() {
         //given
         Member member = new Member("test1", "pw12345", "member1", "test2343@naver.com");
+        System.out.println(member.getId());
 
         //when
-        memberRepository.save(member);
-        Member findMember = memberRepository.findById(member.getId()).get();
+        Member savedMember = memberRepository.save(member);
 
         //then
-        Assertions.assertThat(findMember.getId()).isEqualTo(1L);
-        Assertions.assertThat(member).isEqualTo(findMember);
-
+        assertThat(savedMember.getId()).isEqualTo(1L);
+        assertThat(savedMember).isEqualTo(member);
     }
+
 
 }

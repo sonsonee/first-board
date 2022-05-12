@@ -1,4 +1,4 @@
-package myfirst.board.repository;
+package myfirst.board.domain.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

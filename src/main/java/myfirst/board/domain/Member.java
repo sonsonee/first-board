@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +19,7 @@ public class Member {
     private Long id;    //  Primary Key
 
     private String loginId;
+
     private String password;
     private String nickname;
     private String email;

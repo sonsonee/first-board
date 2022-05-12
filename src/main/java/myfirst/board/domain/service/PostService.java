@@ -1,4 +1,4 @@
-package myfirst.board.service;
+package myfirst.board.domain.service;
 
 import org.springframework.stereotype.Service;
 

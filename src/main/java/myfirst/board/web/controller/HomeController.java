@@ -1,4 +1,4 @@
-package myfirst.board.controller;
+package myfirst.board.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

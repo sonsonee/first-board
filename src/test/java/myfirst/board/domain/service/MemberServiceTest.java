@@ -1,41 +1,34 @@
-package myfirst.board.service;
+package myfirst.board.domain.service;
 
 import myfirst.board.domain.Member;
-import myfirst.board.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
+import myfirst.board.domain.repository.MemberRepository;
+import myfirst.board.domain.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest // 스프링 부트 띄운 상태로 테스트
 @Transactional // test 끝난 이후 rollback
 class MemberServiceTest {
 
-    @Autowired MemberRepository memberRepository;
-    @Autowired MemberService memberService;
-    @Autowired EntityManager em;
+    @Autowired
+    MemberService memberService;
 
     @Test
     void join() {
         //given
-        Member member = new Member("test1", "pw12345", "testnick", "test@naver.com");
+        Member member = new Member("test1", "pw12345", "test", "test@naver.com");
 
         //when
         Long savedId = memberService.join(member);
 
-        em.flush();
-
         //then
-        Member findMember = memberRepository.findById(savedId).get();
-        assertThat(member).isEqualTo(findMember);
-
+        assertThat(savedId).isEqualTo(1L);
     }
 
     @Test

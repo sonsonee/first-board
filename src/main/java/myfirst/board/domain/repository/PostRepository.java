@@ -1,4 +1,4 @@
-package myfirst.board.repository;
+package myfirst.board.domain.repository;
 
 import myfirst.board.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
