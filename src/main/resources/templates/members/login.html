@@ -11,13 +11,17 @@
     .mb-3{
       margin: 20px;
     }
+    .field-error{
+        border-color: crimson;
+        color: crimson;
+    }
 
 </style>
 <link rel="stylesheet" href="./login.css"/>
 </head>
 <body>
 
-<div th:replace="fragments/common :: header"></div>
+<div th:replace="fragments/header :: header"></div>
 
 <div class="container">
 
@@ -38,7 +42,8 @@
                        th:field="*{password}"/>
             </div>
         </div>
-        <div th:if="${#fields.hasGlobalErrors()}">
+        <br>
+        <div th:if="${#fields.hasGlobalErrors()}" style="text-align: center">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
         </div>

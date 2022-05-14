@@ -25,6 +25,9 @@ public class Member {
     private String email;
     private LocalDateTime joinDate;
 
+    protected Member() {
+    }
+
     public Member(String loginId, String password, String nickname, String email) {
         this.loginId = loginId;
         this.password = password;

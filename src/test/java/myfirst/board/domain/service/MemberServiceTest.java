@@ -25,19 +25,10 @@ class MemberServiceTest {
         Member member = new Member("test1", "pw12345", "test", "test@naver.com");
 
         //when
-        Long savedId = memberService.join(member);
+        Long savedMember = memberService.join(member);
 
         //then
-        assertThat(savedId).isEqualTo(1L);
+        assertThat(savedMember).isEqualTo(1L);
     }
 
-    @Test
-    void findByMemberId() {
-        //given
-
-        //when
-
-        //then
-
-    }
 }

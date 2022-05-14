@@ -16,21 +16,21 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //회원가입
-    @Transactional
     public Long join(Member member) {
-//        validateDuplicateLoginId(member);
-        memberRepository.save(member);
-        return member.getId();
-    }
-
-
-    //아이디 중복 검사
-    private void validateDuplicateLoginId(Member member) {
-        Optional<Member> findMembers = memberRepository.findByLoginId(member.getLoginId());
-        if(!findMembers.isEmpty()){ //EXCEPTION
-            throw new IllegalStateException("이미 존재하는 아이디입니다.");
+        if(memberRepository.findByLoginId(member.getLoginId()).isPresent()){ // 아이디 이미 존재하면 null 반환
+            return null;
         }
+        Member savedMember = memberRepository.save(member);
+        return savedMember.getId();
     }
+
+/*    //아이디 중복 검사
+    private void validateDuplicateLoginId(String loginId) {
+        memberRepository.findByLoginId(loginId)
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 아이디입니다.");
+                });
+    }*/
 
 
 }

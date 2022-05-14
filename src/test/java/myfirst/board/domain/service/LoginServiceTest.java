@@ -30,6 +30,9 @@ class LoginServiceTest {
         //then
         assertThat(result1).isEqualTo(member);
         assertThat(result2).isEqualTo(null);
+        System.out.println("result1 = " + result1);
+        System.out.println("result2 = " + result2);
+        System.out.println("member = " + member);
     }
 
 }

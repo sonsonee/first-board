@@ -11,9 +11,13 @@
     .mb-3 {
       margin: 20px;
     }
+    .field-error{
+        border-color: crimson;
+        color: crimson;
+    }
   </style>
   <body>
-    <div th:replace="fragments/common :: header"></div>
+    <div th:replace="fragments/header :: header"></div>
     <div class="container">
       <h2 style="text-align: center; margin: 50px">회원가입</h2>
       <form
@@ -32,10 +36,11 @@
               placeholder="아이디를 입력하세요"
               required="required"
               th:field="*{loginId}"
+              th:errorclass="field-error"
             />
-            <!--<p th:if="${#fields.hasErrors('loginId')}" th:errors="*{name}">
-              Incorrect date
-            </p>-->
+            <div class="field-error" th:errors="*{loginId}">
+              아이디 오류
+            </div>
           </div>
         </div>
         <div class="mb-3 row">
@@ -49,9 +54,14 @@
               placeholder="비밀번호를 입력하세요"
               required="required"
               th:field="*{password}"
+              th:errorclass="field-error"
             />
+            <div class="field-error" th:errors="*{password}">
+              비밀번호 오류
+            </div>
           </div>
         </div>
+
         <div class="mb-3 row">
           <label th:for="nickname" class="col-sm-2 col-form-label"
             >닉네임</label
@@ -63,6 +73,7 @@
               placeholder="닉네임을 입력하세요"
               required="required"
               th:field="*{nickname}"
+              th:errorclass="field-error"
             />
           </div>
         </div>
@@ -78,6 +89,7 @@
               placeholder="name@example.com"
               required="required"
               th:field="*{email}"
+              th:errorclass="field-error"
             />
           </div>
         </div>

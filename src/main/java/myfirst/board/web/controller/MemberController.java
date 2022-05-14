@@ -1,6 +1,7 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import myfirst.board.domain.Member;
 import myfirst.board.domain.service.LoginService;
 import myfirst.board.web.form.LoginForm;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/members")
@@ -27,24 +30,29 @@ public class MemberController {
     private final LoginService loginService;
 
     @GetMapping("/new")
-    public String createMemberForm(Model model) {
-        model.addAttribute("memberForm", new MemberCreateForm());
+    public String createMemberForm(@ModelAttribute("member") MemberCreateForm form) {
         return "members/join";
     }
 
     @PostMapping("/new")
-    public String createMember(@Valid @ModelAttribute("member") MemberCreateForm form, BindingResult result) {
+    public String createMember(@Valid @ModelAttribute("member") MemberCreateForm form, BindingResult bindingResult) {
 
-        if(result.hasErrors()){
-            return"members/join";
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return "members/join";
         }
-
-        //중복 검사
 
         //회원 가입
         Member member = new Member(form.getLoginId(), form.getPassword(),
                 form.getNickname(), form.getEmail());
-        memberService.join(member);
+        Long joinMember = memberService.join(member);
+
+        //중복 처리
+        if (joinMember == null) {
+            bindingResult.rejectValue("loginId", "duplicate", new Object[]{"아이디"}, null);
+            return "members/join";
+        }
+
         return "redirect:/";
     }
 
@@ -59,7 +67,16 @@ public class MemberController {
             return "members/login";
         }
 
+        //로그인 처리
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
 
+        if (loginMember == null) {
+            bindingResult.reject("loginFail", "아이디와 비밀번호가 맞지 않습니다.");
+            return "members/login";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("loginMember", loginMember);
 
         return "redirect:/";
     }
