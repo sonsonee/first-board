@@ -13,18 +13,18 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class MemberCreateForm {
 
-    @NotNull
+    @NotBlank
     @Length(min = 3, max = 10)
     private String loginId;
 
-    @NotNull
+    @NotBlank
     @Length(min = 8, max = 15)
     private String password;
 
-    @NotEmpty
+    @NotBlank
     private String nickname;
 
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 

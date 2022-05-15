@@ -20,13 +20,14 @@ public class PostRepository {
     }
 
     @Transactional(readOnly = true)
-    public Post findOne(Long postId) {
+    public Post findById(Long postId) {
         return em.find(Post.class, postId);
     }
 
     @Transactional(readOnly = true)
     public List<Post> findByTitle(String title) {
-
-        return null;
+        return em.createQuery("select p from Post p where p.title = :title", Post.class)
+                .setParameter("title", title)
+                .getResultList();
     }
 }

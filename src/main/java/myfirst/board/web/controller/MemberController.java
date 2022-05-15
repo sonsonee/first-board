@@ -37,7 +37,7 @@ public class MemberController {
     @PostMapping("/new")
     public String createMember(@Valid @ModelAttribute("member") MemberCreateForm form, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "members/join";
         }
@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String createLoginForm(@ModelAttribute("loginForm")LoginForm form) {
+    public String createLoginForm(@ModelAttribute("loginForm") LoginForm form) {
         return "members/login";
     }
 
@@ -77,9 +77,17 @@ public class MemberController {
 
         HttpSession session = request.getSession();
         session.setAttribute("loginMember", loginMember);
+        log.info("session={}", session.getId());
 
         return "redirect:/";
     }
 
-
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
 }
