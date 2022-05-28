@@ -1,15 +1,8 @@
 package myfirst.board.domain.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import myfirst.board.domain.entity.Comment;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
-
-@Repository
-public class CommentRepository {
-
-    @Autowired
-    EntityManager em;
-
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 }

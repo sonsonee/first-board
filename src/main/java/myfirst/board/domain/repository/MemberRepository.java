@@ -1,23 +1,18 @@
 package myfirst.board.domain.repository;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import myfirst.board.domain.Member;
-import org.springframework.beans.factory.annotation.Autowired;
+import myfirst.board.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
 import java.util.Optional;
 
-@Slf4j
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    private final EntityManager em;
+    public Optional<Member> findByLoginId(String loginId);
+    public Optional<Member> findByNickname(String nickname);
+
+    public boolean existsByLoginId(String loginId);
+
+/*    private final EntityManager em;
 
     @Transactional
     public Member save(Member member) {
@@ -42,4 +37,9 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsByLoginId(String loginId) {
+        return
+    }*/
 }

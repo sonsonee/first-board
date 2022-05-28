@@ -1,9 +1,11 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import myfirst.board.domain.Post;
+import myfirst.board.domain.dto.PostDto;
+import myfirst.board.domain.entity.Member;
+import myfirst.board.domain.entity.Post;
 import myfirst.board.domain.repository.PostRepository;
-import myfirst.board.web.form.PostForm;
+import myfirst.board.web.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,25 +25,26 @@ public class PostController {
     private final PostRepository postRepository;
 
     @GetMapping("/write")
-    public String writePostForm(@ModelAttribute("postForm") PostForm form) {
+    public String writePostForm(@ModelAttribute("post") PostDto.Request dto) {
         return "posts/write";
     }
 
     @PostMapping("/write")
-    public String writePost(@Valid @ModelAttribute("postForm") PostForm form, BindingResult bindingResult,
+    public String writePost(@Valid @ModelAttribute("post") PostDto.Request dto, BindingResult bindingResult,
                             HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "posts/write";
         }
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            //TODO 현재 로그인한 유저 정보 알기
-//            new Post(form.getTitle(), form.getContent(), session.)
+        //로그인한 멤버
+        HttpSession session = request.getSession();
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
-        }
-//        postRepository.save();
+        Post post = dto.toEntity(member);
+//        postRepository.save(post);
 
         return "posts/post";
     }
+
+
 }

@@ -1,22 +1,19 @@
 package myfirst.board.domain.repository;
 
-import myfirst.board.domain.Post;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import myfirst.board.domain.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-@Repository
-public class PostRepository {
 
-    @Autowired
-    EntityManager em;
+/*
+
+    private final EntityManager em;
 
     @Transactional
-    public void save(Post post) {
+    public Long save(Post post) {
         em.persist(post);
+        return post.getId();
     }
 
     @Transactional(readOnly = true)
@@ -26,8 +23,17 @@ public class PostRepository {
 
     @Transactional(readOnly = true)
     public List<Post> findByTitle(String title) {
-        return em.createQuery("select p from Post p where p.title = :title", Post.class)
+        return em.createQuery("select p from Post p where p.title like :title", Post.class)
                 .setParameter("title", title)
                 .getResultList();
     }
+
+//    public List<Post> findByWriter() {}
+
+    @Transactional
+    public void delete(Long id) {
+        Post post = findById(id);
+        em.remove(post);
+    }
+*/
 }
