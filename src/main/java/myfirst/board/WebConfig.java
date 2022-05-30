@@ -14,6 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .excludePathPatterns("/", "/members/new", "/login", "/logout",
                         // TODO post 상세보기 관련 URI 추가
+                        "/posts/post/**",
                         "/*.css", "/*.ico", "/error");
     }
 }

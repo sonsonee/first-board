@@ -20,13 +20,29 @@ public class PostService {
     /**
      * 포스팅
      */
-    public void post(PostDto.Request postDto, String nickname){
-        Post post = postDto.toEntity(memberRepository.findByNickname(nickname).get());
+    public Long post(PostDto.Request postDto, Long memberId){
+        Post post = postDto.toEntity(memberRepository.findById(memberId).get());
         postRepository.save(post);
+        return post.getId();
     }
 
+    public PostDto.Response findById(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException(String.format("#%d의 게시물이 없습니다.", postId)));
+        return new PostDto.Response(post);
+    }
+
+    /** TODO 제목으로 검색
+     *
+     * @param keyword
+     * @return
+     */
+/*    public List<PostDto.Response> search(String keyword) {
+
+    }*/
+
     /**
-     * TODO 포스트 리스트 얻기
+     * 포스트 리스트 얻기
      */
     public List<PostDto.Response> getPostList() {
         List<PostDto.Response> postList = new ArrayList<>();
@@ -47,7 +63,8 @@ public class PostService {
      * 게시글 삭제
      */
     public void delete(Long postId) {
-        Post deletePost = postRepository.findById(postId).get();
+        Post deletePost = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalStateException(String.format("#%d의 게시물이 없습니다.", postId)));
         postRepository.delete(deletePost);
     }
 

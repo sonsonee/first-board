@@ -38,9 +38,9 @@
               th:field="*{loginId}"
               th:errorclass="field-error"
             />
-            <div class="field-error" th:errors="*{loginId}">
+            <small class="field-error" th:errors="*{loginId}">
               아이디 오류
-            </div>
+            </small>
           </div>
         </div>
         <div class="mb-3 row">
@@ -56,9 +56,9 @@
               th:field="*{password}"
               th:errorclass="field-error"
             />
-            <div class="field-error" th:errors="*{password}">
+            <small class="field-error" th:errors="*{password}">
               비밀번호 오류
-            </div>
+            </small>
           </div>
         </div>
 

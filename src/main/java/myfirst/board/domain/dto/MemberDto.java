@@ -30,12 +30,12 @@ public class MemberDto {
 
         @NotBlank
         @Pattern(regexp = "^[a-zA-Z0-9-_]{3,10}",
-                message = "아이디는 3~10자의 영문과 숫자, 특수기호(-),(_)만 사용 가능합니다.")
+                message = "3~10자의 영문과 숫자, 특수기호(-),(_)만 사용 가능합니다.")
         private String loginId;
 
         @NotBlank
         @Pattern(regexp = "^[a-zA-Z0-9-_!@#$%^&]{8,15}",
-                message = "비밀번호는 8~15자의 영문과 숫자, 특수기호(-_!@#$%^&)만 사용 가능합니다.")
+                message = "8~15자의 영문과 숫자, 특수기호(-_!@#$%^&)만 사용 가능합니다.")
         private String password;
 
         @NotBlank

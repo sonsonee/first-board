@@ -6,6 +6,8 @@ import myfirst.board.domain.entity.Member;
 import myfirst.board.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -20,14 +22,6 @@ public class MemberService {
      * @return MemberDto.Response : 정상 가입
      */
     public MemberDto.Response join(MemberDto.Request memberDto) {
-
-        // 중복이면 return null;
-        try {
-            validateDuplicateLoginId(memberDto.getLoginId());
-        } catch (IllegalStateException e) {
-            return null;
-        }
-
         // DTO -> Entity 변환은 Service 계층에서 이루어짐
         Member savedMember = memberRepository.save(memberDto.toEntity());
         return new MemberDto.Response(savedMember);
@@ -40,19 +34,31 @@ public class MemberService {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
     }
 
-    //로그인
-    public String login(String loginId, String password) {
-        if (memberRepository.findByLoginId(loginId)
+    /**
+     * 로그인
+     * @param loginId
+     * @param password
+     * @return memberId
+     */
+    public Long login(String loginId, String password) {
+        return memberRepository.findByLoginId(loginId)
                 .filter(m -> m.getPassword().equals(password))
-                .orElse(null) == null) {
-            return null;
-        }
-        return loginId;
+                .orElseThrow(() -> new IllegalStateException("아이디와 비밀번호가 맞지 않습니다."))
+                .getId();
     }
 
+    public MemberDto.Response findById(Long memberId) {
+        // Optional 값을 받아서 다시 Optional 값을 반환하는 것은 반복적인 일일 뿐이므로
+        // Service 계층에서는 Optional.empty()를 받았을 때 이를 예외 처리하는 비즈니스 로직을 작성한다.
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new IllegalStateException(String.format("#%d의 회원이 없습니다.", memberId)));
+        return new MemberDto.Response(member);
+    }
 
-    public Member findByLoginId(String loginId) {
-        return memberRepository.findByLoginId(loginId).get();
+    public MemberDto.Response findByLoginId(String loginId) {
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(
+                () -> new IllegalStateException(String.format("아이디 %s의 회원이 없습니다.", loginId)));
+        return new MemberDto.Response(member);
     }
 
 }

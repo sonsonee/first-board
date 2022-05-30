@@ -25,17 +25,17 @@ public class MemberController {
 
     @GetMapping("/members/new")
     public String createMemberForm(@ModelAttribute("member") MemberDto.Request memberDto) {
-        return "/members/join";
+        return "members/join";
     }
 
     @PostMapping("/members/new")
     public String createMember(@Valid @ModelAttribute("member") MemberDto.Request memberDto, BindingResult bindingResult) {
 
-        // TODO 중복 에러 미리 표현하는 방법은..?
+        // 아이디 중복 에러 처리
         try {
             memberService.validateDuplicateLoginId(memberDto.getLoginId());
         } catch (IllegalStateException e){
-            bindingResult.rejectValue("loginId", "duplicate", new Object[]{"아이디"}, null);
+            bindingResult.rejectValue("loginId", "duplicate", new Object[]{"아이디"}, e.getMessage());
             return "members/join";
         }
 
@@ -45,7 +45,7 @@ public class MemberController {
             return "members/join";
         }
 
-        //회원 가입
+        // 회원 가입
         MemberDto.Response joinMember = memberService.join(memberDto);
 
         return "redirect:/login";
@@ -53,22 +53,23 @@ public class MemberController {
 
     @GetMapping("/login")
     public String createLoginForm(@ModelAttribute("member") MemberDto.Request memberDto) {
-        return "/members/login";
+        return "members/login";
     }
 
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("member") MemberDto.Request memberDto, BindingResult bindingResult, HttpServletRequest request) {
 
-        //로그인 처리
-        String loginResult = memberService.login(memberDto.getLoginId(), memberDto.getPassword());
+        Long loginMemberId; // 로그인할 멤버 id
 
-        if (loginResult == null) {
-            bindingResult.reject("loginFail", "아이디와 비밀번호가 맞지 않습니다.");
-            return "/members/login";
+        try {
+            loginMemberId = memberService.login(memberDto.getLoginId(), memberDto.getPassword());
+        } catch (IllegalStateException e) {
+            bindingResult.reject("loginFail", e.getMessage());
+            return "members/login";
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, memberService.findByLoginId(loginResult));
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMemberId);
         log.info("session={}", session.getId());
 
         return "redirect:/";
