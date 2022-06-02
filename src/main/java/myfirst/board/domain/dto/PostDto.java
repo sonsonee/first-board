@@ -53,6 +53,7 @@ public class PostDto {
         private Long views;
         private LocalDateTime createdDate;
         private LocalDateTime updatedDate;
+        private Long memberId;
         private String nickname;
         private List<CommentDto.Response> comments;
 
@@ -63,6 +64,7 @@ public class PostDto {
             this.views = post.getViews();
             this.createdDate = post.getCreatedDate();
             this.updatedDate = post.getUpdatedDate();
+            this.memberId = post.getMember().getId();
             this.nickname = post.getMember().getNickname();
             this.comments = post.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList());
         }

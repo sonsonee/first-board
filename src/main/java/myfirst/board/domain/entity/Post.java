@@ -26,6 +26,8 @@ public class Post extends BaseTime {
     private Long id;
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
     private Long views;
 
@@ -34,5 +36,11 @@ public class Post extends BaseTime {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
+
+    // 게시글 수정
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }

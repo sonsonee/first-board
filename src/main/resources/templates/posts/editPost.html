@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<style>
+    .container {
+      margin-top: 100px;
+      width: 800px;
+    }
+    .mb-3 {
+      margin: 20px;
+    }
+    .field-error{
+        border-color: crimson;
+        color: crimson;
+    }
+  </style>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container">
+    <form role="form"
+          action="/posts/edit/{postId}(postId=${post.id})"
+          th:action th:object="${post}" method="post">
+        <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="id" th:value="${post.id}" />
+        <div class="mb-3">
+            <label for="title" class="form-label">제목</label>
+            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요."
+                   th:field="*{title}" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{title}">
+                타이틀 오류
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea type="text" class="form-control" id="content" placeholder="내용을 입력하세요." rows="3"
+                      th:field="*{content}" th:errorclass="field-error"></textarea>
+            <div class="field-error" th:errors="*{content}">
+                글 오류
+            </div>
+        </div>
+        <div style="text-align: center; margin: 50px;">
+            <button
+                    type="submit"
+                    role="button"
+                    class="btn btn-primary"
+            >
+                글 수정하기
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

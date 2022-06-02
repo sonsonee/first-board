@@ -6,6 +6,7 @@ import myfirst.board.domain.dto.PostDto;
 import myfirst.board.domain.service.MemberService;
 import myfirst.board.domain.service.PostService;
 import myfirst.board.web.SessionConst;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.PrintWriter;
 
 @Controller
 @RequestMapping("/posts")
@@ -52,16 +55,50 @@ public class PostController {
     }
 
     @GetMapping("/post/{postId}")
-    public String viewPost(@PathVariable Long postId, Model model) {
+    public String viewPost(@PathVariable Long postId,
+                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Long loginMemberId,
+                           Model model) {
+
+        if (loginMemberId != null) {
+            MemberDto.Response member = memberService.findById(loginMemberId);
+            model.addAttribute("memberId", member.getId());
+        }
+
         PostDto.Response post = postService.findById(postId);
         model.addAttribute("post", post);
         model.addAttribute("comments", post.getComments());
         return "posts/post";
     }
 
-    @GetMapping("/post/update/{postId}")
-    public String updatePost(@PathVariable Long postId, Model model) {
+    @GetMapping("/edit/{postId}")
+    public String editPostForm(@PathVariable Long postId,
+                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER) Long memberId,
+                               Model model) {
 
-        return null;
+        PostDto.Response post = postService.findById(postId);
+        MemberDto.Response member = memberService.findById(memberId);
+
+        //해당 게시글의 작성자가 아님 -> 홈 페이지로 돌려보냄
+        if (!post.getMemberId().equals(member.getId())) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("post", post);
+        return "posts/editPost";
+    }
+
+    @PutMapping("/edit/{postId}")
+    public String editPost(@PathVariable Long postId, PostDto.Request dto, RedirectAttributes redirectAttributes) {
+        postService.edit(postId, dto);
+        redirectAttributes.addAttribute("postId", postId);
+        return "redirect:/posts/post/{postId}";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{postId}")
+    public String deletePost(@PathVariable Long postId) {
+        postService.delete(postId);
+        String msg = "<script>alert('게시글이 삭제되었습니다.');location.href='/'</script>";
+        return msg;
     }
 }

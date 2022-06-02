@@ -6,9 +6,11 @@ import myfirst.board.domain.entity.Post;
 import myfirst.board.domain.repository.MemberRepository;
 import myfirst.board.domain.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,15 +22,17 @@ public class PostService {
     /**
      * 포스팅
      */
+    @Transactional
     public Long post(PostDto.Request postDto, Long memberId){
         Post post = postDto.toEntity(memberRepository.findById(memberId).get());
         postRepository.save(post);
         return post.getId();
     }
 
+    @Transactional(readOnly = true)
     public PostDto.Response findById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException(String.format("#%d의 게시물이 없습니다.", postId)));
+                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
         return new PostDto.Response(post);
     }
 
@@ -44,6 +48,7 @@ public class PostService {
     /**
      * 포스트 리스트 얻기
      */
+    @Transactional(readOnly = true)
     public List<PostDto.Response> getPostList() {
         List<PostDto.Response> postList = new ArrayList<>();
         for (Post post : postRepository.findAll()) {
@@ -53,19 +58,24 @@ public class PostService {
     }
 
     /**
-     * TODO 업데이트
+     * 게시글 수정
      */
-    public void update(PostDto.Request postDto) {
-
+    @Transactional
+    public void edit(Long postId, PostDto.Request postDto) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
+        post.update(postDto.getTitle(), postDto.getContent());
     }
 
     /**
      * 게시글 삭제
      */
+    @Transactional
     public void delete(Long postId) {
-        Post deletePost = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalStateException(String.format("#%d의 게시물이 없습니다.", postId)));
-        postRepository.delete(deletePost);
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
+
+        postRepository.delete(post);
     }
 
 

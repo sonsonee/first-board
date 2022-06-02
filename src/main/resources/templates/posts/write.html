@@ -25,17 +25,17 @@
       action="/posts/write"
       th:action th:object="${post}" method="post">
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">제목</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="제목을 입력하세요."
-            th:field="*{title}">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요."
+            th:field="*{title}" th:errorclass="field-error">
         <div class="field-error" th:errors="*{title}">
             타이틀 오류
         </div>
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">내용</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="내용을 입력하세요." rows="3"
-            th:field="*{content}"></textarea>
+        <label for="content" class="form-label">내용</label>
+        <textarea class="form-control" id="content" placeholder="내용을 입력하세요." rows="3"
+            th:field="*{content}" th:errorclass="field-error"></textarea>
         <div class="field-error" th:errors="*{content}">
             글 오류
         </div>

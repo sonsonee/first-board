@@ -1,63 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/common :: html-head">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="./home.css"/>
-</head>
+  <head th:replace="fragments/common :: html-head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="./home.css" />
+  </head>
 
-<body>
-<div class="container">
-    <div th:replace="fragments/header :: header">-- thymeleaf header will be inserted here. --</div>
+  <body>
+    <div class="container">
+      <div th:replace="fragments/header :: header">
+        -- thymeleaf header will be inserted here. --
+      </div>
 
-    <!-- navbar -->
-    <nav class="navbar justify-content-end navbar-expand-lg navbar-light">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" th:text="${member} ? |${member.nickname}님 어서오세요!|">Hello!</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/posts/write"
-            >글쓰기</a>
-        </li>
-        <li class="nav-item" th:style="${member} ? 'display: none'">
-            <a class="nav-link" href="/login"
-            >로그인</a>
-        </li>
-        <form class="nav-item"
-              th:style="${member} ?: 'display: none'"
-              th:action="@{/logout}"
-              method="post">
-            <a class="nav-link"
-               href="/logout"
+      <!-- navbar -->
+      <nav class="navbar justify-content-end navbar-expand-lg navbar-light">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              th:text="${member} ? |${member.nickname}님 어서오세요!|"
+              >Hello!</a
             >
-                로그아웃</a>
-        </form>
-        <li class="nav-item">
-            <a class="nav-link" th:style="${member} ? 'display: none'" href="/members/new">회원가입</a>
-        </li>
-    </ul>
-    </nav>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:style="${member} ?: 'display: none'"
+               href="/posts/write">글쓰기</a>
+          </li>
+          <li class="nav-item" th:style="${member} ? 'display: none'">
+            <a class="nav-link" href="/login">로그인</a>
+          </li>
+          <li
+            class="nav-item"
+            th:style="${member} ?: 'display: none'"
+            th:action="@{/logout}"
+            method="post"
+          >
+            <a class="nav-link" href="/logout"> 로그아웃</a>
+          </li>
+          <li class="nav-item" th:style="${member} ? 'display: none'">
+            <a class="nav-link" href="/members/new">회원가입</a>
+          </li>
+        </ul>
+      </nav>
 
-    <table class="table">
+      <table class="table">
         <thead>
-        <tr>
+          <tr>
             <th scope="col">#</th>
             <th scope="col">제목</th>
             <th scope="col"></th>
             <th scope="col">작성자</th>
             <th scope="col">작성일</th>
-        </tr>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="post : ${posts}">
+          <tr th:each="post : ${posts}">
             <td th:text="${post.id}">#</td>
-            <td> <a th:text="${post.title}" colspan="2"
-                    th:href="@{|/posts/post/${post.id}|}">제목</a></td>
+            <td colspan="2">
+              <a
+                th:text="${post.title}"
+                th:href="@{|/posts/post/${post.id}|}"
+                >제목</a
+              >
+            </td>
             <td th:text="${post.nickname}">작성자</td>
-            <td th:text="${post.createdDate}">작성일</td>
-        </tr>
+            <td th:text="${#temporals.format(post.createdDate, 'yyyy-mm-dd HH:mm:ss')}">작성일</td>
+          </tr>
         </tbody>
-    </table>
-</div>
-</body>
+      </table>
+    </div>
+  </body>
 </html>

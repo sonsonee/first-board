@@ -1,7 +1,8 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import myfirst.board.domain.entity.Member;
+import myfirst.board.domain.dto.MemberDto;
+import myfirst.board.domain.service.MemberService;
 import myfirst.board.domain.service.PostService;
 import myfirst.board.web.SessionConst;
 import org.springframework.stereotype.Controller;
@@ -13,21 +14,19 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 public class HomeController {
 
+    private final MemberService memberService;
     private final PostService postService;
-
-    /*@GetMapping("/")
-    public String mainPage() {
-        return "home"; // 렌더링할 html 파일 경로
-    }
-*/
 
     @GetMapping("/")
     public String home(
-            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Long loginMemberId, Model model) {
 
-        model.addAttribute("member", loginMember);
+        if (loginMemberId != null) {
+            MemberDto.Response loginMember = memberService.findById(loginMemberId);
+            model.addAttribute("member", loginMember);
+        }
+
         model.addAttribute("posts", postService.getPostList());
-//        model.addAttribute("posts", posts);
 
         return "home";
     }

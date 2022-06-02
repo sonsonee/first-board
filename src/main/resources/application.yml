@@ -6,6 +6,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   messages:
     basename: errors
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
   jpa:
     hibernate:
