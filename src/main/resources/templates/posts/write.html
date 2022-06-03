@@ -34,7 +34,7 @@
     </div>
     <div class="mb-3">
         <label for="content" class="form-label">내용</label>
-        <textarea class="form-control" id="content" placeholder="내용을 입력하세요." rows="3"
+        <textarea class="form-control" id="content" placeholder="내용을 입력하세요." rows="10"
             th:field="*{content}" th:errorclass="field-error"></textarea>
         <div class="field-error" th:errors="*{content}">
             글 오류

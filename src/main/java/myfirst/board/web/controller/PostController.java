@@ -1,6 +1,7 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import myfirst.board.domain.dto.CommentDto;
 import myfirst.board.domain.dto.MemberDto;
 import myfirst.board.domain.dto.PostDto;
 import myfirst.board.domain.service.MemberService;
@@ -57,6 +58,7 @@ public class PostController {
     @GetMapping("/post/{postId}")
     public String viewPost(@PathVariable Long postId,
                            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Long loginMemberId,
+                           @ModelAttribute("addComment") CommentDto.Request commentDto,
                            Model model) {
 
         if (loginMemberId != null) {

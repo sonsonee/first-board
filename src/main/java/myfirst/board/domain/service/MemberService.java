@@ -6,8 +6,6 @@ import myfirst.board.domain.entity.Member;
 import myfirst.board.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {

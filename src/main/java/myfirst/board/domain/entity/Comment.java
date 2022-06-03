@@ -4,12 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,4 +28,9 @@ public class Comment extends BaseTime {
     //다대일 양방향
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
+    /* 업데이트 */
+    public void update(String content) {
+        this.content = content;
+    }
 }

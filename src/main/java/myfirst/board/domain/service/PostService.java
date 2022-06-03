@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +36,20 @@ public class PostService {
     }
 
     /** TODO 제목으로 검색
-     *
+     *  TODO post.id 기준 내림차순으로 출력하게 만들기 - Controller 에서 할수도
      * @param keyword
      * @return
      */
-/*    public List<PostDto.Response> search(String keyword) {
-
-    }*/
+    public List<PostDto.Response> search(String keyword) {
+        List<Post> posts = postRepository.findAll();
+        List<PostDto.Response> foundPosts = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getTitle().contains(keyword)) {
+                foundPosts.add(new PostDto.Response(post));
+            }
+        }
+        return foundPosts;
+    }
 
     /**
      * 포스트 리스트 얻기

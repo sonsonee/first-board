@@ -2,21 +2,10 @@ package myfirst.board.domain.dto;
 
 import lombok.*;
 import myfirst.board.domain.entity.Member;
-import myfirst.board.domain.entity.Post;
-import org.apache.coyote.Response;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-
-import javax.persistence.Convert;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
