@@ -29,4 +29,8 @@ public class Member extends BaseTime {
 //    @OneToMany(mappedBy = "member")
 //    private List<Post> posts = new ArrayList<>();
 
+    /* update */
+    public void update(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -27,10 +27,11 @@ class MemberServiceTest {
                 "nickname1", "email@mail.com");
 
         //when
-        MemberDto.Response joinMember = memberService.join(memberDto);
+        Long joinMemberId = memberService.join(memberDto);
 
         //then
-        assertThat(joinMember.getNickname()).isEqualTo(memberDto.getNickname());
+        MemberDto.Response foundMember = memberService.findById(joinMemberId);
+        assertThat(foundMember.getNickname()).isEqualTo(memberDto.getNickname());
     }
 
     @Test
@@ -38,7 +39,7 @@ class MemberServiceTest {
         //given
         MemberDto.Request memberDto = new MemberDto.Request("loginId1", "password1",
                 "nickname1", "email@mail.com");
-        MemberDto.Response joinMember = memberService.join(memberDto);
+        Long joinMemberId = memberService.join(memberDto);
 
         //when
         IllegalStateException e = assertThrows(IllegalStateException.class,
@@ -55,14 +56,14 @@ class MemberServiceTest {
         //given
         MemberDto.Request memberDto = new MemberDto.Request("loginId1", "password1",
                 "nickname1", "email@mail.com");
-        MemberDto.Response joinMember = memberService.join(memberDto);
+        Long joinMemberId = memberService.join(memberDto);
 
         //when
         Long result = memberService.login("loginId1", "password1");
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.login("loginId2", "www"));
 
         //then
-        assertThat(result).isEqualTo(joinMember.getId());
+        assertThat(result).isEqualTo(joinMemberId);
         assertEquals("아이디와 비밀번호가 맞지 않습니다.", e.getMessage());
         System.out.println("result = " + result);
 
@@ -73,10 +74,10 @@ class MemberServiceTest {
         //given
         MemberDto.Request memberDto = new MemberDto.Request("loginId1", "password1",
                 "nickname1", "email@mail.com");
-        MemberDto.Response joinMember = memberService.join(memberDto);
+        Long joinMemberId = memberService.join(memberDto);
 
         //when
-        IllegalStateException e1 = assertThrows(IllegalStateException.class, () -> memberService.findById(10L));
+        IllegalStateException e1 = assertThrows(IllegalStateException.class, () -> memberService.findById(joinMemberId));
         IllegalStateException e2 = assertThrows(IllegalStateException.class, () -> memberService.findByLoginId("lol"));
 
         //then

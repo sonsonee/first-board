@@ -27,9 +27,10 @@ public class Comment extends BaseTime {
 
     //다대일 양방향
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     private Post post;
 
-    /* 업데이트 */
+    /* update */
     public void update(String content) {
         this.content = content;
     }

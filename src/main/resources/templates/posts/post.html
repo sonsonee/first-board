@@ -4,15 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   </head>
   <style>
-    .detailInfo{
-        color: gray;
-        font-size: small;
+    .detailInfo {
+      color: gray;
+      font-size: small;
     }
-    .comment{
-        margin-top: 30px;
+    .comment {
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
-    .commentNickname{
-        font-size: medium;
+    .commentNickname {
+      font-size: medium;
+      font-weight: bold;
+    }
+    .borderlessButton {
+      border: 0;
+      outline: 0;
+      display: inline-block;
+    }
+    .hidden {
+      display: none;
     }
   </style>
   <body>
@@ -23,80 +33,215 @@
       <div th:object="${post}">
         <!--title-->
         <h1 class="mt-5" th:text="*{title}">제목</h1>
-        <small th:text="|작성자 : *{nickname}|" class="detailInfo">작성자</small><br>
-        <small th:text="|작성일 : ${#temporals.format(post.createdDate, 'yyyy-mm-dd HH:mm')}|" class="detailInfo">작성일</small><br>
-        <small th:text="|수정일 : ${#temporals.format(post.createdDate, 'yyyy-mm-dd HH:mm')}|" class="detailInfo">수정일</small>
-
-
+        <small th:text="|작성자 : *{nickname}|" class="detailInfo">작성자</small
+        ><br />
+        <small
+          th:text="|작성일 : ${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}|"
+          class="detailInfo"
+          >작성일</small
+        ><br />
+        <small
+          th:unless="${post.getCreatedDate().equals(post.getUpdatedDate())}"
+          th:text="|수정일 : ${#temporals.format(post.updatedDate, 'yyyy-MM-dd HH:mm')}|"
+          class="detailInfo"
+          >수정일</small
+        ><br />
+        <small th:text="|조회수 : *{views}|" class="detailInfo">조회수</small>
 
         <!--content-->
-        <div style="margin-top: 20px;">
-          <pre style='white-space:pre-wrap; word-break: break-all;'
-               th:utext="*{content}">내용</pre>
+        <div style="margin-top: 20px">
+          <pre
+            style="white-space: pre-wrap; word-break: break-all"
+            th:utext="*{content}"
+          >
+내용</pre
+          >
         </div>
 
         <!-- 작성자에게만 삭제/수정버튼 표시-->
-        <div style="text-align: center; margin: 100px;">
-          <button type="button" class="btn btn-primary"
-                  onclick="location.href='home.html'"
-                  th:onclick="|location.href='@{/}'|">목록</button>
-          <button type="button" class="btn btn-primary"
-                  th:if="${post.getMemberId().equals(memberId)}"
-                  th:onclick="|location.href='@{/posts/edit/{postId}(postId=${post.id})}'|"
-          >수정</button>
-          <button hidden>
-          <form action="#" th:action="@{'/posts/delete/{id}'(id=${post.id})}" th:method="delete" >
-            <input type="hidden" name="_method" value="delete" />
-            <button type="submit" class="btn btn-primary" id="submitButton"
-                    th:if="${post.getMemberId().equals(memberId)}">삭제</button>
-          </form>
+        <div style="text-align: center; margin: 100px">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="location.href='home.html'"
+            th:onclick="|location.href='@{/}'|"
+          >
+            목록
           </button>
-
+          <button
+            type="button"
+            class="btn btn-primary"
+            th:if="${post.getMemberId().equals(memberId)}"
+            th:onclick="|location.href='@{/posts/edit/{postId}(postId=${post.id})}'|"
+          >
+            수정
+          </button>
+          <button hidden>
+            <form
+              action="#"
+              th:action="@{'/posts/delete/{id}'(id=${post.id})}"
+              th:method="delete"
+            >
+              <input type="hidden" name="_method" value="delete" />
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="submitButton"
+                th:if="${post.getMemberId().equals(memberId)}"
+                onclick="alert('글이 삭제되었습니다.')"
+              >
+                삭제
+              </button>
+            </form>
+          </button>
         </div>
       </div>
 
-      <div th:unless="${post.getComments().isEmpty()}"><hr></div>
+      <div th:unless="${post.getComments().isEmpty()}"><hr /></div>
 
       <!--comments-->
       <div class="comment" th:each="comment : ${comments}">
-        <div>
-          <h6 class="commentNickname" th:text="${comment.nickname}">닉네임</h6>
-          <small th:text="|작성일 : ${#temporals.format(comment.createdDate, 'yyyy-mm-dd HH:mm')}|" class="detailInfo">작성일</small>
-        </div>
-        <div>
-          <pre style='white-space:pre-wrap; word_wrap:break-word; word-break: break-all;'
-                   th:utext="${comment.content}">내용</pre>
-        </div>
-      </div>
-
-      <hr>
-
-      <!-- comment input -->
-      <form role="form"
-            action="/comments/write"
-            th:action th:object="${addComment}" method="post"
+        <div style="width: 100%; height: 50px; margin-bottom: 10px">
+          <div style="width: 70%; float: left">
+            <h6 class="commentNickname" th:text="${comment.nickname}">
+              닉네임
+            </h6>
+            <small
+              th:text="|작성일 : ${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm')}|"
+              class="detailInfo"
             >
-        <div class="mb-3">
-          <label for="content" class="form-label">댓글 작성</label>
-          <textarea class="form-control" id="content" placeholder="댓글을 입력하세요." rows="3"
-                    th:field="*{content}" th:errorclass="field-error"></textarea>
-          <div class="field-error" th:errors="*{content}">
-            글 오류
+              작성일
+            </small>
+            <small
+              th:unless="${comment.getCreatedDate().equals(comment.getUpdatedDate())}"
+              th:text="|수정일 : ${#temporals.format(comment.updatedDate, 'yyyy-MM-dd HH:mm')}|"
+              class="detailInfo"
+            >
+              수정일
+            </small>
+          </div>
+
+          <!--댓글 수정/삭제 버튼-->
+          <div style="width: 30%; float: right; text-align: right">
+            <button hidden>
+              <form>
+                <input type="hidden" name="_method" value="put" />
+                <button
+                  id="comment_edit_btn"
+                  type="button"
+                  class="detailInfo borderlessButton btn"
+                  th:if="${comment.getMemberId().equals(memberId)}"
+                >
+                  수정
+                </button>
+              </form>
+            </button>
+            <button hidden>
+              <form
+                th:action="@{'/posts/post/{postId}/comments/{commentId}'(postId=${post.id}, commentId=${comment.id})}"
+                th:method="delete"
+              >
+                <input type="hidden" name="_method" value="delete" />
+                <button
+                  id="comment_delete_btn"
+                  type="submit"
+                  class="detailInfo borderlessButton btn"
+                  th:if="${comment.getMemberId().equals(memberId)}"
+                  onclick="alert('댓글이 삭제되었습니다.')"
+                >
+                  삭제
+                </button>
+              </form>
+            </button>
           </div>
         </div>
-        <div style="text-align: right; margin-bottom: 100px">
-          <button
-                  type="submit"
-                  class="btn btn-primary"
+
+        <div>
+          <pre
+            id="comment_content"
+            style="
+              white-space: pre-wrap;
+              word-wrap: break-word;
+              word-break: break-all;
+              text-align: left;
+            "
+            th:utext="${comment.content}"
           >
-            등록
-          </button>
+내용</pre
+          >
+
+          <!-- 댓글 수정 폼 -->
+          <div id="comment_edit">
+            <form
+              th:action="@{'/posts/{postId}/comments/{commentId}'(postId=${post.id}, commentId=${comment.id})}"
+              th:method="put"
+            >
+<!--              <label for="comment_edit_form" class="form-label">제목</label>
+              <textarea
+                      id="comment_edit_form"
+                      class="form-control"
+                      rows="3"
+                      th:field="${comment.content}"
+              ></textarea>-->
+              <div style="text-align: right;">
+              <button id="comment_edit_cancel" type="button">취소</button>
+              <button type="submit">댓글 수정</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
 
+        <hr />
+      </div>
+      <!--comments-->
+
+      <!-- comment input -->
+      <div>
+        <form role="form" th:action th:object="${addComment}" method="post">
+          <div class="mb-3">
+            <label for="content" class="form-label">댓글 작성</label>
+            <textarea
+              class="form-control"
+              id="content"
+              placeholder="댓글을 입력하세요."
+              rows="3"
+              th:field="*{content}"
+              th:errorclass="field-error"
+            ></textarea>
+            <div class="field-error" th:errors="*{content}">글 오류</div>
+          </div>
+          <div style="text-align: right; margin-bottom: 100px">
+            <button type="submit" class="btn btn-primary">등록</button>
+          </div>
+        </form>
+      </div>
     </div>
+    <!--container-->
 
+    <script type="text/javascript">
+      function comment_edit_form(commentId) {
+        let target = document.querySelector(
+        let comment_edit = document.querySelector("#comment_edit, #comment_content, #comment_edit_btn, #comment_delete_btn");
 
-    </div>
+        comment_edit.classList.toggle("hidden");
+        comment_content.classList.toggle("hidden");
+        comment_edit_btn.classList.toggle("hidden");
+        comment_delete_btn.classList.toggle("hidden");
+      }
+
+      let comment_edit_button = document.querySelector("#comment_edit_btn");
+      comment_edit_button.addEventListener("click", comment_edit_form);
+
+      let comment_edit_cancel = document.querySelector("#comment_edit_cancel");
+      comment_edit_cancel.addEventListener("click", comment_edit_form);
+
+      // <!--      $("#comment_delete_btn").click(function () {
+      //         if (confirm("정말 삭제하시겠습니까?") == true) {
+      //           alert("댓글이 삭제되었습니다.");
+      //         } else {
+      //           return;
+      //         }
+      //       });-->
+    </script>
   </body>
 </html>

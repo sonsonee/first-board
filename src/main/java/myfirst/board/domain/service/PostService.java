@@ -28,13 +28,6 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional(readOnly = true)
-    public PostDto.Response findById(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
-        return new PostDto.Response(post);
-    }
-
     /** TODO 제목으로 검색
      *  TODO post.id 기준 내림차순으로 출력하게 만들기 - Controller 에서 할수도
      * @param keyword
@@ -68,9 +61,9 @@ public class PostService {
      */
     @Transactional
     public void edit(Long postId, PostDto.Request postDto) {
-        Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
-        post.update(postDto.getTitle(), postDto.getContent());
+        postRepository.findById(postId).ifPresent(p -> {
+            p.update(postDto.getTitle(), postDto.getContent());
+        });
     }
 
     /**
@@ -79,9 +72,17 @@ public class PostService {
     @Transactional
     public void delete(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
+                () -> new IllegalStateException(String.format("#%d 게시글이 없습니다.", postId)));
 
         postRepository.delete(post);
+    }
+
+    // PostController 에서 사용
+    @Transactional(readOnly = true)
+    public PostDto.Response findById(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalStateException(String.format("#%d의 게시글이 없습니다.", postId)));
+        return new PostDto.Response(post);
     }
 
 

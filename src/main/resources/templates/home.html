@@ -63,7 +63,7 @@
               >
             </td>
             <td th:text="${post.nickname}">작성자</td>
-            <td th:text="${#temporals.format(post.createdDate, 'yyyy-mm-dd HH:mm')}">작성일</td>
+            <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</td>
           </tr>
         </tbody>
       </table>

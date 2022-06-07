@@ -96,11 +96,9 @@ public class PostController {
         return "redirect:/posts/post/{postId}";
     }
 
-    @ResponseBody
     @DeleteMapping("/delete/{postId}")
     public String deletePost(@PathVariable Long postId) {
         postService.delete(postId);
-        String msg = "<script>alert('게시글이 삭제되었습니다.');location.href='/'</script>";
-        return msg;
+        return "redirect:/";
     }
 }

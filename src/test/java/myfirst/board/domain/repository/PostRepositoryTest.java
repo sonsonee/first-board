@@ -35,7 +35,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    void updatedDateTest() throws InterruptedException {
+    void updatedDate() throws InterruptedException {
         //given
         Member member = Member.builder().loginId("test0").password("test!").nickname("테스트").email("test@test.com").build();
         Post post = Post.builder().title("Post for Test").content("It's Test.").views(0L).member(member).build();

@@ -29,10 +29,10 @@ public class Post extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    // 게시글 수정
+    /* update */
     public void update(String title, String content) {
         this.title = title;
         this.content = content;

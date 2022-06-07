@@ -7,10 +7,7 @@ import myfirst.board.domain.service.MemberService;
 import myfirst.board.web.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,13 +43,19 @@ public class MemberController {
         }
 
         // 회원 가입
-        MemberDto.Response joinMember = memberService.join(memberDto);
+        memberService.join(memberDto);
 
         return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String createLoginForm(@ModelAttribute("member") MemberDto.Request memberDto) {
+    public String createLoginForm(@ModelAttribute("member") MemberDto.Request memberDto,
+                                  @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Long alreadyLoginMember) {
+        // 이미 로그인된 멤버가 있으면 돌려보내기
+        if (alreadyLoginMember != null) {
+            return "redirect:/";
+        }
+        
         return "members/login";
     }
 
@@ -69,8 +72,8 @@ public class MemberController {
         }
 
         HttpSession session = request.getSession();
+
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMemberId);
-        log.info("session={}", session.getId());
 
         return "redirect:/";
     }
