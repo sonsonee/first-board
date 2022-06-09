@@ -25,7 +25,6 @@
           action="/posts/edit/{postId}(postId=${post.id})"
           th:action th:object="${post}" method="post">
         <input type="hidden" name="_method" value="put" />
-        <input type="hidden" name="id" th:value="${post.id}" />
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요."
