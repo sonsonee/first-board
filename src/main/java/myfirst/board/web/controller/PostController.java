@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.PrintWriter;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -92,7 +93,7 @@ public class PostController {
     }
 
     @PutMapping("/edit/{postId}")
-    public String editPost(@PathVariable Long postId, PostDto.Request dto, RedirectAttributes redirectAttributes) {
+    public String editPost(@PathVariable Long postId, @ModelAttribute PostDto.Request dto, RedirectAttributes redirectAttributes) {
         log.info("postDto.Request={}", dto.getTitle());
         postService.edit(postId, dto);
         redirectAttributes.addAttribute("postId", postId);
@@ -103,5 +104,14 @@ public class PostController {
     public String deletePost(@PathVariable Long postId) {
         postService.delete(postId);
         return "redirect:/";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(defaultValue = " ") String keyword, Model model) {
+
+        List<PostDto.Response> searchList = postService.search(keyword);
+        model.addAttribute("posts", searchList);
+
+        return "posts/searchResult";
     }
 }

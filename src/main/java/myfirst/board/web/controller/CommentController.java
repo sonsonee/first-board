@@ -48,7 +48,7 @@ public class CommentController {
     @PutMapping("/post/{postId}/comments/{commentId}")
     public String modifyComment(@PathVariable Long postId,
                               @PathVariable Long commentId,
-                              @ModelAttribute("") CommentDto.Request dto,
+                              @ModelAttribute CommentDto.Request dto,
                               RedirectAttributes redirectAttributes) {
 
 

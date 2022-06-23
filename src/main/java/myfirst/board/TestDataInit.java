@@ -23,10 +23,10 @@ public class TestDataInit {
     /**
      * 테스트용 데이터 추가
      */
-    @PostConstruct
+//    @PostConstruct
     public void init() {
 
-        Member member1 = Member.builder().loginId("test1").password("test!").nickname("테스트1").email("test1@test.com").build();
+/*        Member member1 = Member.builder().loginId("test1").password("test!").nickname("테스트1").email("test1@test.com").build();
         memberRepository.save(member1);
 
         Member member2 = Member.builder().loginId("test2").password("test!").nickname("테스트2").email("test2@test.com").build();
@@ -45,7 +45,7 @@ public class TestDataInit {
         commentRepository.save(comment1_2);
 
         Comment comment1_3 = Comment.builder().member(member1).post(post1).content("테스트용 댓글입니다.3 \n하하").build();
-        commentRepository.save(comment1_3);
+        commentRepository.save(comment1_3);*/
     }
 
 }

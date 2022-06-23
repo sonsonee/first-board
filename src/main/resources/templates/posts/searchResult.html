@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/header :: header">
+        -- thymeleaf header will be inserted here. --
+    </div>
+
+    <div>
+    <h3>검색 결과</h3>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">제목</th>
+            <th scope="col"></th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.id}" >#</td>
+            <td colspan="2">
+                <a
+                        th:text="${post.title}"
+                        th:href="@{|/posts/post/${post.id}|}"
+                >제목</a
+                >
+            </td>
+            <td th:text="${post.nickname}">작성자</td>
+            <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
