@@ -110,6 +110,7 @@ public class PostController {
     public String search(@RequestParam(defaultValue = " ") String keyword, Model model) {
 
         List<PostDto.Response> searchList = postService.search(keyword);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("posts", searchList);
 
         return "posts/searchResult";
