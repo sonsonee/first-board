@@ -40,12 +40,12 @@
           class="detailInfo"
           >작성일</small
         ><br />
-        <small
-          th:unless="${post.getCreatedDate().equals(post.getUpdatedDate())}"
-          th:text="|수정일 : ${#temporals.format(post.updatedDate, 'yyyy-MM-dd HH:mm')}|"
-          class="detailInfo"
-          >수정일</small
-        >
+        <div th:unless="${post.getCreatedDate().equals(post.getUpdatedDate())}"><small
+
+                th:text="|수정일 : ${#temporals.format(post.updatedDate, 'yyyy-MM-dd HH:mm')}|"
+                class="detailInfo"
+        >수정일</small
+        ><br /></div>
         <small th:text="|조회수 : *{views}|" class="detailInfo">조회수</small>
 
         <!--content-->
@@ -119,7 +119,7 @@
               </small>
               <small
                 th:unless="${comment.getCreatedDate().equals(comment.getUpdatedDate())}"
-                th:text="|수정일 : ${#temporals.format(comment.updatedDate, 'yyyy-MM-dd HH:mm')}|"
+                th:text="|  수정일 : ${#temporals.format(comment.updatedDate, 'yyyy-MM-dd HH:mm')}|"
                 class="detailInfo"
               >
                 수정일
@@ -128,18 +128,14 @@
 
             <!--댓글 수정/삭제 버튼-->
             <div style="width: 30%; float: right; text-align: right">
-              <button hidden>
-                <form>
-                  <button
-                    id="comment_edit_btn"
-                    type="button"
-                    class="detailInfo borderlessButton btn"
-                    th:if="${comment.getMemberId().equals(memberId)}"
-                    th:onclick="|comment_edit_form(${comment.getId()})|"
-                  >
-                    수정
-                  </button>
-                </form>
+              <button
+                id="comment_edit_btn"
+                type="button"
+                class="detailInfo borderlessButton btn"
+                th:if="${comment.getMemberId().equals(memberId)}"
+                th:onclick="|comment_edit_form(${comment.getId()})|"
+              >
+                수정
               </button>
               <button hidden>
                 <form
@@ -187,9 +183,9 @@
                     <input type="hidden" name="_method" value="put" />
                     <input type="hidden" name="id" th:value="${comment.id}" />
                     <textarea
-                      id="comment_edit_form"
                       class="form-control"
                       rows="3"
+                      th:name="content"
                       th:text="${comment.content}"
                     ></textarea>
                   </div>
@@ -202,7 +198,6 @@
                     </button>
                     <button
                       type="button"
-                      id="comment_edit_cancel"
                       class="detailInfo borderlessButton btn"
                       th:onclick="|comment_edit_form(${comment.getId()})|"
                     >
@@ -244,13 +239,13 @@
     <script type="text/javascript" th:inline="javascript">
       function comment_edit_form(cId) {
         let target = document.getElementById("c" + cId);
-        alert("comment_edit_form");
 
         target.querySelector("#comment_edit").classList.toggle("hidden");
         target.querySelector("#comment_content").classList.toggle("hidden");
         target.querySelector("#comment_edit_btn").classList.toggle("hidden");
         target.querySelector("#comment_delete_btn").classList.toggle("hidden");
       }
+
 
       // TODO 추가하고 싶은 기능 : 삭제 다시 묻기
       // $("#comment_delete_btn").click(function () {

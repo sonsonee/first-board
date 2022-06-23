@@ -1,16 +1,19 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import myfirst.board.domain.dto.CommentDto;
 import myfirst.board.domain.service.CommentService;
 import myfirst.board.web.SessionConst;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -43,15 +46,17 @@ public class CommentController {
     }
 
     @PutMapping("/post/{postId}/comments/{commentId}")
-    public String editComment(@PathVariable Long postId,
+    public String modifyComment(@PathVariable Long postId,
                               @PathVariable Long commentId,
-                              @RequestBody CommentDto.Request commentDto,
+                              @ModelAttribute("") CommentDto.Request dto,
                               RedirectAttributes redirectAttributes) {
 
-        commentService.edit(commentId, commentDto.getContent());
+
+        log.info("commentModify={}", dto);
+        commentService.modify(commentId, dto);
 
         redirectAttributes.addAttribute("postId", postId);
-        return "/posts/post/{postId}";
+        return "redirect:/posts/post/{postId}";
     }
 
     @DeleteMapping("post/{postId}/comments/{commentId}")

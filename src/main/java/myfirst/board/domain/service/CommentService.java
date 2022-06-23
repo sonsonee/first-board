@@ -22,8 +22,12 @@ public class CommentService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
+
     /**
      * 댓글 작성
+     * @param commentDto
+     * @param memberId
+     * @param postId
      */
     @Transactional
     public void comment(CommentDto.Request commentDto, Long memberId, Long postId) {
@@ -34,24 +38,16 @@ public class CommentService {
                 commentRepository.save(comment);
             });
         });
-
-/*
-        postRepository.findById(postId).ifPresent(p -> {
-            memberRepository.findById(memberId).ifPresent(m -> {
-                Comment comment = commentDto.toEntity(m, p);
-                commentRepository.save(comment);
-            });
-        });
-*/
-
     }
 
     /**
      * 댓글 수정
      */
     @Transactional
-    public void edit(Long commentId, String content) {
-
+    public void modify(Long commentId, CommentDto.Request dto) {
+        commentRepository.findById(commentId).ifPresent(c -> {
+            c.update(dto.getContent());
+        });
     }
 
     /**
@@ -73,6 +69,12 @@ public class CommentService {
 
     }
 */
+
+    /**
+     * commentId로 찾기
+     * @param commentId
+     * @return CommentDto.Response
+     */
     @Transactional(readOnly = true)
     public CommentDto.Response findById(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(

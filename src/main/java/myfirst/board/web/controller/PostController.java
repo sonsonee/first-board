@@ -1,6 +1,7 @@
 package myfirst.board.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import myfirst.board.domain.dto.CommentDto;
 import myfirst.board.domain.dto.MemberDto;
 import myfirst.board.domain.dto.PostDto;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.PrintWriter;
 
+@Slf4j
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
@@ -91,6 +93,7 @@ public class PostController {
 
     @PutMapping("/edit/{postId}")
     public String editPost(@PathVariable Long postId, PostDto.Request dto, RedirectAttributes redirectAttributes) {
+        log.info("postDto.Request={}", dto.getTitle());
         postService.edit(postId, dto);
         redirectAttributes.addAttribute("postId", postId);
         return "redirect:/posts/post/{postId}";
