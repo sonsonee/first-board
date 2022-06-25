@@ -8,6 +8,9 @@ import myfirst.board.domain.dto.PostDto;
 import myfirst.board.domain.service.MemberService;
 import myfirst.board.domain.service.PostService;
 import myfirst.board.web.SessionConst;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -69,6 +75,8 @@ public class PostController {
             model.addAttribute("memberId", member.getId());
         }
 
+        postService.increaseViews(postId);
+
         PostDto.Response post = postService.findById(postId);
         model.addAttribute("post", post);
         model.addAttribute("comments", post.getComments());
@@ -107,12 +115,24 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam(defaultValue = " ") String keyword, Model model) {
+    public String search(@RequestParam(defaultValue = " ") String keyword, Model model,
+                         @PageableDefault(size = 10) Pageable pageable) {
 
-        List<PostDto.Response> searchList = postService.search(keyword);
+        Page<PostDto.Response> posts = postService.search(keyword, pageable);
+
+        int startPage = Math.max(1, posts.getPageable().getPageNumber() - 1);
+        int endPage = Math.min(posts.getTotalPages(), posts.getPageable().getPageNumber() + 3);
+        int totalPage = posts.getTotalPages();
+
         model.addAttribute("keyword", keyword);
-        model.addAttribute("posts", searchList);
+        model.addAttribute("posts", posts);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPage", totalPage);
 
-        return "posts/searchResult";
+        LocalDateTime startOfDate = LocalDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate().atTime(LocalTime.MIN);
+        model.addAttribute("startOfDate", startOfDate);
+
+        return "posts/search";
     }
 }

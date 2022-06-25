@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: html-head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/header :: header">
+        -- thymeleaf header will be inserted here. --
+    </div>
+
+    <div style="margin: 50px;">
+    <h3 th:text="|'${keyword}' 검색 결과|">검색 결과</h3>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">제목</th>
+            <th scope="col"></th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성일</th>
+            <th scope="col">조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.id}" >#</td>
+            <td colspan="2">
+                <a
+                        th:text="${post.title}"
+                        th:href="@{|/posts/post/${post.id}|}"
+                >제목</a
+                >
+            </td>
+            <td th:text="${post.nickname}">작성자</td>
+            <td th:if="${post.createdDate.isAfter(startOfDate)}" th:text="${#temporals.format(post.createdDate, 'HH:mm')}">작성시</td>
+            <td th:if="${post.CreatedDate.isBefore(startOfDate) && post.CreatedDate.isAfter(startOfDate.minusYears(1))}" th:text="${#temporals.format(post.createdDate, 'MM-dd')}">작성일</td>
+            <td th:if="${post.CreatedDate.isBefore(startOfDate.minusYears(1))}" th:text="${#temporals.format(post.createdDate, 'YYYY-MM-dd')}">작성년일</td>
+            <td th:text="${post.views}">조회수</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- paging -->
+    <div style="text-align: right">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" th:if="${totalPage} != 0">
+                <li class="page-item"><a class="page-link" th:href="@{/(page=${posts.pageable.pageNumber} - 1)}">&laquo;</a></li>
+                <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                    th:classappend="${page == posts.pageable.pageNumber + 1} ? 'disabled'" >
+                    <a class="page-link" th:href="@{/(page=${page-1})}" th:text="${page}">pageNumber</a></li>
+                <li class="page-item"><a class="page-link" th:href="@{/(page=${posts.pageable.pageNumber + 1})}">&raquo;</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
