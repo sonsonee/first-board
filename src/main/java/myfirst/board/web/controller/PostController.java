@@ -9,6 +9,7 @@ import myfirst.board.domain.service.MemberService;
 import myfirst.board.domain.service.PostService;
 import myfirst.board.web.SessionConst;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -116,9 +117,9 @@ public class PostController {
 
     @GetMapping("/search")
     public String search(@RequestParam(defaultValue = " ") String keyword, Model model,
-                         @PageableDefault(size = 10) Pageable pageable) {
+                         @RequestParam(defaultValue = "0") int page) {
 
-        Page<PostDto.Response> posts = postService.search(keyword, pageable);
+        Page<PostDto.Response> posts = postService.search(keyword, page);
 
         int startPage = Math.max(1, posts.getPageable().getPageNumber() - 1);
         int endPage = Math.min(posts.getTotalPages(), posts.getPageable().getPageNumber() + 3);

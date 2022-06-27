@@ -39,8 +39,4 @@ public class Post extends BaseTime {
 
     }
 
-    public void updateViews(Long views) {
-        this.views = views;
-    }
-
 }

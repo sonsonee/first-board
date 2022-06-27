@@ -13,21 +13,20 @@
     <h3 th:text="|'${keyword}' 검색 결과|">검색 결과</h3>
     </div>
 
-    <table class="table">
+    <table class="table" style="width: 100%">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">제목</th>
-            <th scope="col"></th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-            <th scope="col">조회수</th>
+            <th scope="col" style="width: 5%">#</th>
+            <th scope="col" style="width: 60%">제목</th>
+            <th scope="col" style="width: 10%">작성자</th>
+            <th scope="col" style="width: 10%">작성일</th>
+            <th scope="col" style="width: 5%">조회수</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="post : ${posts}">
             <td th:text="${post.id}" >#</td>
-            <td colspan="2">
+            <td>
                 <a
                         th:text="${post.title}"
                         th:href="@{|/posts/post/${post.id}|}"

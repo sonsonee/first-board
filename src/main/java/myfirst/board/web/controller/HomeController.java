@@ -14,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Long loginMemberId,
-            @PageableDefault(size=10) Pageable pageable,
+            @RequestParam(defaultValue = "0") int page,
             Model model) {
 
         //로그인 여부 체크
@@ -41,10 +42,7 @@ public class HomeController {
         }
 
         //페이징
-
-//        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "id"));
-
-        Page<PostDto.Response> posts = postService.getPostList(pageable);
+        Page<PostDto.Response> posts = postService.getPostList(page);
         int startPage = Math.max(1, posts.getPageable().getPageNumber() - 1);
         int endPage = Math.min(posts.getTotalPages(), posts.getPageable().getPageNumber() + 3);
         int totalPage = posts.getTotalPages();

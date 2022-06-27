@@ -6,7 +6,9 @@ import myfirst.board.domain.entity.Post;
 import myfirst.board.domain.repository.MemberRepository;
 import myfirst.board.domain.repository.PostRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,20 +39,21 @@ public class PostService {
      * 포스트 리스트 얻기
      */
     @Transactional(readOnly = true)
-    public Page<PostDto.Response> getPostList(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
+    public Page<PostDto.Response> getPostList(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> posts = postRepository.findAll(pageRequest);
         Page<PostDto.Response> postPage = posts.map(post -> new PostDto.Response(post));
         return postPage;
     }
 
     /**
      * 검색
-     *  TODO post.id 기준 내림차순으로 출력하게 만들기 - Controller 에서 할수도
-     * @param keyword
+     * @param keyword, page
      * @return
      */
-    public Page<PostDto.Response> search(String keyword, Pageable pageable) {
-        Page<Post> foundPosts = postRepository.findByTitleContaining(keyword, pageable);
+    public Page<PostDto.Response> search(String keyword, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Post> foundPosts = postRepository.findByTitleContaining(keyword, pageRequest);
         Page<PostDto.Response> postPage = foundPosts.map(post -> new PostDto.Response(post));
         return postPage;
     }
@@ -83,7 +86,7 @@ public class PostService {
     public void increaseViews(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalStateException(String.format("#%d 게시글이 존재하지 않습니다.", postId)));
-        post.updateViews(post.getViews() + 1L);
+        postRepository.updateViews(postId, post.getViews() + 1L);
     }
 
 
