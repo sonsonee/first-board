@@ -6,7 +6,6 @@ import myfirst.board.domain.dto.CommentDto;
 import myfirst.board.domain.service.CommentService;
 import myfirst.board.web.SessionConst;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

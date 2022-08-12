@@ -52,7 +52,7 @@ public class MemberService {
     }
 
     public MemberDto.Response findById(Long memberId) {
-        // Optional 값을 받아서 다시 Optional 값을 반환하는 것은 반복적인 일일 뿐이므로
+        // Optional 값을 받아서 다시 Optional 값을 반환하는 것은 반복적인 일이므로
         // Service 계층에서는 Optional.empty()를 받았을 때 이를 예외 처리하는 비즈니스 로직을 작성한다.
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new IllegalStateException(String.format("#%d 회원이 없습니다.", memberId)));

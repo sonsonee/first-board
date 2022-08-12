@@ -2,17 +2,12 @@ package myfirst.board.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import myfirst.board.domain.dto.CommentDto;
-import myfirst.board.domain.dto.MemberDto;
 import myfirst.board.domain.entity.Comment;
-import myfirst.board.domain.entity.Member;
 import myfirst.board.domain.repository.CommentRepository;
 import myfirst.board.domain.repository.MemberRepository;
 import myfirst.board.domain.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,16 +54,6 @@ public class CommentService {
             commentRepository.delete(c);
         });
     }
-
-    /**
-     * 댓글 목록 조회 - postDto 에 선언되어 있어서 불필요할 것 같다는 생각
-     */
-/*
-    @Transactional(readOnly = true)
-    public List<CommentDto.Response> getCommentList() {
-
-    }
-*/
 
     /**
      * commentId로 찾기

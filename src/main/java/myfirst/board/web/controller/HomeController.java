@@ -7,10 +7,6 @@ import myfirst.board.domain.service.MemberService;
 import myfirst.board.domain.service.PostService;
 import myfirst.board.web.SessionConst;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

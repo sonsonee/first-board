@@ -53,7 +53,6 @@ public class MemberDto {
         private String email;
         private LocalDateTime createdDate;
         private LocalDateTime updatedDate;
-//        private List<PostDto.Response> posts = new ArrayList<>();
 
         // Entity -> DTO
         public Response(Member member) {
@@ -63,40 +62,7 @@ public class MemberDto {
             this.email = member.getEmail();
             this.createdDate = member.getCreatedDate();
             this.updatedDate = member.getUpdatedDate();
-//            this.posts = member.getPosts().stream().map(PostDto.Response::new).collect(Collectors.toList());
         }
 
     }
-
-/*
-    private Long id;
-
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9-_]{3,10}",
-            message = "아이디는 3~10자의 영문과 숫자, 특수기호(-),(_)만 사용 가능합니다.")
-    private String loginId;
-
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9-_!@#$%^&]{8,15}",
-            message = "비밀번호는 8~15자의 영문과 숫자, 특수기호(-_!@#$%^&)만 사용 가능합니다.")
-    private String password;
-
-    @NotBlank
-    private String nickname;
-
-    @NotBlank
-    @Email
-    private String email;
-
-    private LocalDateTime joinDate;
-
-    public Member toEntity() {
-        return Member.builder()
-                .id(id)
-                .loginId(loginId)
-                .password(password)
-                .nickname(nickname)
-                .email(email).
-                joinDate(joinDate).build();
-    }*/
 }
